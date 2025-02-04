@@ -1,0 +1,29 @@
+{
+    "env": {
+      "browser": true,
+      "node": true,
+      "es2021": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "settings": {
+      "react": {
+        "version": "detect"  
+      }
+    },
+    "globals": {
+      "process": "readonly"  
+    },
+    "rules": {
+        "no-console": ["error", { "allow": ["warn", "error"] }],
+       "react/react-in-jsx-scope": "off"
+    }
+  }
+  

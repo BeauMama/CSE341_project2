@@ -1,0 +1,173 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Schools API",
+      "description": "API for managing schools",
+      "version": "1.0"
+    },
+    "host": "",
+     "schemes": ["http","https"], 
+    "paths": {
+      "/contacts": {
+        "get": {
+          "description": "Retrieve all schools. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
+          "parameters": [
+            {
+              "name": "apiKey",
+              "in": "header",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of schools. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string", "example": "My School" },
+                    "location": { "type": "string", "example": "MyTown, UT" },
+                    "established": { "type": "int32", "example": 1990 },
+                    "type": { "type": "string", "example": "Public" },
+                    "student_population": { "type": "int32", "example": 1000 },
+                    "website": { "type": "string", "example": "https://www.myschool.edu" },
+                    "mascot": { "type": "string", "example": "Elephant" }
+                  }
+                }
+              }
+            },
+            "500": { "description": "Internal Server Error" }
+          }
+        },
+        "post": {
+          "description": "Create a new school. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string", "example": "My School" },
+                    "location": { "type": "string", "example": "MyTown, UT" },
+                    "established": { "type": "int32", "example": 1990 },
+                    "type": { "type": "string", "example": "Public" },
+                    "student_population": { "type": "int32", "example": 1000 },
+                    "website": { "type": "string", "example": "https://www.myschool.edu" },
+                    "mascot": { "type": "string", "example": "Elephant" }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": { "description": "School created successfully" },
+            "400": { "description": "Bad Request" },
+            "500": { "description": "Internal Server Error" }
+          }
+        }
+      },
+      "/contacts/{id}": {
+        "get": {
+          "description": "Retrieve a contact by ID. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "apiKey",
+              "in": "header",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Contact details",
+              "schema": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string", "example": "My School" },
+                    "location": { "type": "string", "example": "MyTown, UT" },
+                    "established": { "type": "int32", "example": 1990 },
+                    "type": { "type": "string", "example": "Public" },
+                    "student_population": { "type": "int32", "example": 1000 },
+                    "website": { "type": "string", "example": "https://www.myschool.edu" },
+                    "mascot": { "type": "string", "example": "Elephant" }
+                }
+              }
+            },
+            "404": { "description": "School not found" },
+            "500": { "description": "Internal Server Error" }
+          }
+        },
+        "put": {
+          "description": "Update a school. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string", "example": "My School" },
+                    "location": { "type": "string", "example": "MyTown, UT" },
+                    "established": { "type": "int32", "example": 1990 },
+                    "type": { "type": "string", "example": "Public" },
+                    "student_population": { "type": "int32", "example": 1000 },
+                    "website": { "type": "string", "example": "https://www.myschool.edu" },
+                    "mascot": { "type": "string", "example": "Elephant" }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": { "description": "School updated successfully" },
+            "400": { "description": "Bad Request" },
+            "500": { "description": "Internal Server Error" }
+          }
+        },
+        "delete": {
+          "description": "Delete a School by ID. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "ID of the school to delete"
+            },
+            {
+              "name": "apiKey",
+              "in": "header",
+              "type": "string",
+              "required": true,
+              "description": "API key for authentication"
+            }
+          ],
+          "responses": {
+            "200": { "description": "School deleted successfully" },
+            "404": { "description": "School not found" },
+            "500": { "description": "Internal Server Error" }
+          }
+        }
+      }
+    }
+  }
+  

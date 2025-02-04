@@ -7,7 +7,7 @@ const API_KEY = process.env.API_KEY;
 const getAll = async (req, res) => {
   try {
 
-const result = await mongodb.getDb().collection('in_state').find();
+const result = await mongodb.getDb().collection('ut_state').find();
 const lists = await result.toArray();
 
     res.status(200).json(lists);
@@ -25,7 +25,7 @@ const getSingle = async (req, res) => {
 
   try {
     const userId = new ObjectId(id);
-    const contact = await mongodb.getDb().collection('in_state').findOne({ _id: userId });
+    const contact = await mongodb.getDb().collection('ut_state').findOne({ _id: userId });
     
     if (!contact) {
       return res.status(404).json({ message: 'Contact not found' });
@@ -38,15 +38,17 @@ const getSingle = async (req, res) => {
 };
 
 const createSchool = async (req, res) => {
-  const contact =
+  const school =
   {
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
-    email: req.body.email,
-    favoriteColor: req.body.favoriteColor,
-    birthday: req.body.birthday,
+    name: req.body.name,
+    location: req.body.location,
+    established: req.body.established,
+    type: req.body.type,
+    student_population: req.body.student_population,
+    website: req.body.website,
+    mascot: req.body.mascot
   };
-  const response = await mongodb.getDb().collection('in_state').insertOne(contact);
+  const response = await mongodb.getDb().collection('ut_state').insertOne(school);
   if(response.acknowledged){
     res.status(201).json({message: 'School created', contact: response});
 }else{
@@ -56,14 +58,16 @@ const createSchool = async (req, res) => {
 
 const updateSchool = async (req, res) => {
   const userId = new ObjectId(req.params.id);
-  const contact = {
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
-    email: req.body.email,
-    favoriteColor: req.body.favoriteColor,
-    birthday: req.body.birthday,
+  const school = {
+    name: req.body.name,
+    location: req.body.location,
+    established: req.body.established,
+    type: req.body.type,
+    student_population: req.body.student_population,
+    website: req.body.website,
+    mascot: req.body.mascot
   };
-  const response = await mongodb.getDb().collection('in_state').replaceOne({ _id: userId }, contact );
+  const response = await mongodb.getDb().collection('ut_state').replaceOne({ _id: userId }, school );
 
   if (response.modifiedCount > 0) {
     res.status(200).send();
@@ -74,7 +78,7 @@ const updateSchool = async (req, res) => {
 
 const deleteSchool = async (req, res) => {
   const userId= new ObjectId(req.params.id);
-  const response = await mongodb.getDb().collection('in_state').deleteOne({_id: userId}, true);
+  const response = await mongodb.getDb().collection('ut_state').deleteOne({_id: userId}, true);
 
   if (response.deletedCount > 0) {
       return res.status(200).send();
