@@ -1,0 +1,66 @@
+[
+    {
+      "name": "University of Utah",
+      "location": "Salt Lake City, UT",
+      "established": 1850,
+      "type": "Public",
+      "student_population": 32000,
+      "website": "https://www.utah.edu",
+      "mascot": "Swoop the Falcon"
+    },
+    {
+      "name": "Brigham Young University",
+      "location": "Provo, UT",
+      "established": 1875,
+      "type": "Private",
+      "student_population": 33000,
+      "website": "https://www.byu.edu",
+      "mascot": "Cosmo the Cougar"
+    },
+    {
+      "name": "Utah State University",
+      "location": "Logan, UT",
+      "established": 1888,
+      "type": "Public",
+      "student_population": 27000,
+      "website": "https://www.usu.edu",
+      "mascot": "Big Blue the Bull"
+    },
+    {
+      "name": "Southern Utah University",
+      "location": "Cedar City, UT",
+      "established": 1897,
+      "type": "Public",
+      "student_population": 7000,
+      "website": "https://www.suu.edu",
+      "mascot": "Thunder the Eagle"
+    },
+    {
+      "name": "Weber State University",
+      "location": "Ogden, UT",
+      "established": 1889,
+      "type": "Public",
+      "student_population": 26000,
+      "website": "https://www.weber.edu",
+      "mascot": "Wildcat"
+    },
+    {
+      "name": "Utah Valley University",
+      "location": "Orem, UT",
+      "established": 1941,
+      "type": "Public",
+      "student_population": 38000,
+      "website": "https://www.uvu.edu",
+      "mascot": "Wolverine"
+    },
+    {
+      "name": "Salt Lake Community College",
+      "location": "Salt Lake City, UT",
+      "established": 1948,
+      "type": "Public",
+      "student_population": 12000,
+      "website": "https://www.slcc.edu",
+      "mascot": "Bruiser the Bear"
+    }
+  ]
+  
