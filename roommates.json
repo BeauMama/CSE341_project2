@@ -1,0 +1,37 @@
+[{
+    "name": "Alice Johnson",
+    "age": 19,
+    "major": "Computer Science",
+    "contact": {
+      "phone": "555-555-1234",
+      "email": "alice.johnson@email.com"
+    }
+  },
+  {
+    "name": "Bob Smith",
+    "age": 20,
+    "major": "Business Administration",
+    "contact": {
+      "phone": "555-555-5678",
+      "email": "bob.smith@email.com"
+    }
+  },
+  {
+    "name": "Charlie Lee",
+    "age": 21,
+    "major": "Mechanical Engineering",
+    "contact": {
+      "phone": "555-555-8765",
+      "email": "charlie.lee@email.com"
+    }
+  },
+  {
+    "name": "Dana Kim",
+    "age": 19,
+    "major": "Psychology",
+    "contact": {
+      "phone": "555-555-4321",
+      "email": "dana.kim@email.com"
+    }
+  }
+]
