@@ -1,173 +1,187 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "title": "Schools API",
-      "description": "API for managing schools",
-      "version": "1.0"
+  "swagger": "2.0",
+  "info": {
+    "title": "Schools and Roommates API",
+    "description": "API for managing schools and roommates",
+    "version": "1.0"
+  },
+  "host": "",
+  "schemes": ["http", "https"],
+ "tags": [
+    {
+      "name": "Schools",
+      "description": "Calls for schools."
     },
-    "host": "",
-     "schemes": ["http","https"], 
-    "paths": {
-      "/schools": {
-        "get": {
-          "description": "Retrieve all schools. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
-          "parameters": [
-            {
-              "name": "apiKey",
-              "in": "header",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of schools. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "id": { "type": "string" },
-                    "name": { "type": "string", "example": "My School" },
-                    "location": { "type": "string", "example": "MyTown, UT" },
-                    "established": { "type": "int32", "example": 1990 },
-                    "type": { "type": "string", "example": "Public" },
-                    "student_population": { "type": "int32", "example": 1000 },
-                    "website": { "type": "string", "example": "https://www.myschool.edu" },
-                    "mascot": { "type": "string", "example": "Elephant" }
-                  }
-                }
-              }
-            },
-            "500": { "description": "Internal Server Error" }
-          }
-        },
-        "post": {
-          "description": "Create a new school. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
-          "parameters": [
-            {
-              "name": "body",
-              "in": "body",
-              "required": true,
-              "schema": {
-                "type": "object",
-                "properties": {
-                    "id": { "type": "string" },
-                    "name": { "type": "string", "example": "My School" },
-                    "location": { "type": "string", "example": "MyTown, UT" },
-                    "established": { "type": "int32", "example": 1990 },
-                    "type": { "type": "string", "example": "Public" },
-                    "student_population": { "type": "int32", "example": 1000 },
-                    "website": { "type": "string", "example": "https://www.myschool.edu" },
-                    "mascot": { "type": "string", "example": "Elephant" }
-                }
+    {
+      "name": "Roommates",
+      "description": "Calls for roommates."
+    }
+  ],
+  "paths": {
+    "/schools": {
+      "get": {
+        "summary": "Get all schools",
+        "tags": ["Schools"],
+        "description": "Retrieve a list of all schools.  ",
+        "responses": {
+          "200": {
+            "description": "A list of schools",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/School"
               }
             }
-          ],
-          "responses": {
-            "201": { "description": "School created successfully" },
-            "400": { "description": "Bad Request" },
-            "500": { "description": "Internal Server Error" }
           }
         }
       },
-      "/schools/{id}": {
-        "get": {
-          "description": "Retrieve a contact by ID. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "apiKey",
-              "in": "header",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Contact details",
-              "schema": {
-                "type": "object",
-                "properties": {
-                    "id": { "type": "string" },
-                    "name": { "type": "string", "example": "My School" },
-                    "location": { "type": "string", "example": "MyTown, UT" },
-                    "established": { "type": "int32", "example": 1990 },
-                    "type": { "type": "string", "example": "Public" },
-                    "student_population": { "type": "int32", "example": 1000 },
-                    "website": { "type": "string", "example": "https://www.myschool.edu" },
-                    "mascot": { "type": "string", "example": "Elephant" }
-                }
-              }
-            },
-            "404": { "description": "School not found" },
-            "500": { "description": "Internal Server Error" }
+      "post": {
+        "summary": "Create a new school",
+        "tags": ["Schools"],
+        "description": "Add a new school to the database.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/School" }
           }
-        },
-        "put": {
-          "description": "Update a school. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "body",
-              "in": "body",
-              "required": true,
-              "schema": {
-                "type": "object",
-                "properties": {
-                    "id": { "type": "string" },
-                    "name": { "type": "string", "example": "My School" },
-                    "location": { "type": "string", "example": "MyTown, UT" },
-                    "established": { "type": "int32", "example": 1990 },
-                    "type": { "type": "string", "example": "Public" },
-                    "student_population": { "type": "int32", "example": 1000 },
-                    "website": { "type": "string", "example": "https://www.myschool.edu" },
-                    "mascot": { "type": "string", "example": "Elephant" }
-                }
+        ],
+        "responses": {
+          "201": { "description": "School created successfully" }
+        }
+      }
+    },
+    "/schools/{id}": {
+      "get": {
+        "summary": "Get a school by ID",
+        "tags": ["Schools"],
+        "parameters": [
+          { "in": "path", "name": "id", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": { "description": "School details", "schema": { "$ref": "#/definitions/School" } }
+        }
+      },
+      "put": {
+        "summary": "Update a school",
+        "tags": ["Schools"],
+        "parameters": [
+          { "in": "path", "name": "id", "required": true, "type": "string" },
+          { "in": "body", "name": "body", "required": true, "schema": { "$ref": "#/definitions/School" } }
+        ],
+        "responses": {
+          "200": { "description": "School updated successfully" }
+        }
+      },
+      "delete": {
+        "summary": "Delete a school",
+        "tags": ["Schools"],
+        "parameters": [
+          { "in": "path", "name": "id", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": { "description": "School deleted successfully" }
+        }
+      }
+    },
+    "/roommates": {
+      "get": {
+        "summary": "Get all roommates",
+        "tags": ["Roommates"],
+        "description": "Retrieve a list of all roommates.",
+        "responses": {
+          "200": {
+            "description": "A list of roommates",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Roommate"
               }
             }
-          ],
-          "responses": {
-            "200": { "description": "School updated successfully" },
-            "400": { "description": "Bad Request" },
-            "500": { "description": "Internal Server Error" }
           }
-        },
-        "delete": {
-          "description": "Delete a School by ID. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "type": "string",
-              "description": "ID of the school to delete"
-            },
-            {
-              "name": "apiKey",
-              "in": "header",
-              "type": "string",
-              "required": true,
-              "description": "API key for authentication"
-            }
-          ],
-          "responses": {
-            "200": { "description": "School deleted successfully" },
-            "404": { "description": "School not found" },
-            "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "summary": "Create a new roommate",
+        "tags": ["Roommates"],
+        "description": "Add a new roommate to the database.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Roommate" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Roommate created successfully" }
+        }
+      }
+    },
+    "/roommates/{id}": {
+      "get": {
+        "summary": "Get a roommate by ID",
+        "tags": ["Roommates"],
+        "parameters": [
+          { "in": "path", "name": "id", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": { "description": "Roommate details", "schema": { "$ref": "#/definitions/Roommate" } }
+        }
+      },
+      "put": {
+        "summary": "Update a roommate",
+        "tags": ["Roommates"],
+        "parameters": [
+          { "in": "path", "name": "id", "required": true, "type": "string" },
+          { "in": "body", "name": "body", "required": true, "schema": { "$ref": "#/definitions/Roommate" } }
+        ],
+        "responses": {
+          "200": { "description": "Roommate updated successfully" }
+        }
+      },
+      "delete": {
+        "summary": "Delete a roommate",
+        "tags": ["Roommates"],
+        "parameters": [
+          { "in": "path", "name": "id", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": { "description": "Roommate deleted successfully" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "School": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "location": { "type": "string" },
+        "established": { "type": "integer" },
+        "type": { "type": "string" },
+        "student_population": { "type": "integer" },
+        "website": { "type": "string" },
+        "mascot": { "type": "string" }
+      }
+    },
+    "Roommate": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "age": { "type": "integer" },
+        "major": { "type": "string" },
+        "contact": {
+          "type": "object",
+          "properties": {
+            "phone": { "type": "string" },
+            "email": { "type": "string" }
           }
         }
       }
     }
   }
-  
+}
