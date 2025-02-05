@@ -49,12 +49,26 @@ const createSchool = async (req, res) => {
   try {
     const response = await mongodb.getDb().collection('schools').insertOne(school);
     if (response.acknowledged) {
-      res.status(201).json({ message: 'School created', school: response.ops[0] });
+      // Return the created school with its insertedId
+      res.status(201).json({
+        message: 'School created successfully',
+        school: {
+          _id: response.insertedId,
+          ...school
+        }
+      });
     } else {
       res.status(500).json({ message: 'There was an error creating the new school' });
     }
   } catch (err) {
-    res.status(500).json({ message: 'There was an error creating the new school', error: err });
+  
+    console.error('Error creating school:', err);
+
+   
+    res.status(500).json({
+      message: 'There was an error creating the new school',
+      error: err.message
+    });
   }
 };
 

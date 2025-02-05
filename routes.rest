@@ -1,0 +1,78 @@
+//local host
+
+### Get all contacts
+GET http://localhost:3000/schools/
+
+### Get a single contact
+GET http://localhost:3000/schools/67a2a3ee4c0364cd98e2eb67
+
+### Create contact
+POST http://localhost:3000/schools/ http/1.1
+Content-Type: application/json
+
+{
+    "name": "Mandi University",
+    "location": "Mytown, UT ",
+    "established": 2025,
+    "type": "Private",
+    "student_population": 5,
+    "website": "https://www.mandiuniversity.edu",
+    "mascot": "Tiger"
+}
+
+### Put contact
+PUT http://localhost:3000/schools/67a2a3ee4c0364cd98e2eb67 http/1.1    
+Content-Type: application/json
+
+{
+    "name": "University of Utah",
+    "location": "Salt Lake City, UT",
+    "established": 1850,
+    "type": "Public",
+    "student_population": 32000,
+    "website": "https://www.utah.edu",
+    "mascot": "Swoop the Falcon"
+}
+
+### Delete contact
+DELETE http://localhost:3000/schools/67a2bd0822952e4ac7876d8a http/1.1
+
+
+
+//Render server
+### Get all contacts
+GET https://cse341-project2-4wgf.onrender.com/schools/
+
+### Get a single contact
+GET https://cse341-project2-4wgf.onrender.com/schools//67a2a3ee4c0364cd98e2eb67
+
+### Create contact
+POST https://cse341-project2-4wgf.onrender.com/schools/ http/1.1
+Content-Type: application/json
+
+{
+   "name": "Mandi University",
+    "location": "Mytown, UT ",
+    "established": 2025,
+    "type": "Private",
+    "student_population": 5,
+    "website": "https://www.mandiuniversity.edu",
+    "mascot": "Tiger"
+}
+
+### Put contact
+PUT https://cse341-project2-4wgf.onrender.com/schools/67a2a3ee4c0364cd98e2eb67 http/1.1    
+Content-Type: application/json
+
+{
+    "name": "University of Utah",
+    "location": "Salt Lake City, UT",
+    "established": 1860,
+    "type": "Public",
+    "student_population": 32000,
+    "website": "https://www.utah.edu",
+    "mascot": "Swoop the Falcon"
+}
+
+### Delete contact
+DELETE https://cse341-project2-4wgf.onrender.com/schools/67a2bd0822952e4ac7876d8a http/1.1
