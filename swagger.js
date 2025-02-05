@@ -3,7 +3,7 @@ const swaggerAutogen = require('swagger-autogen')();
 const doc = {
   info: {
     title: 'My API',
-    description: 'Contact API',
+    description: 'School API',
   },
   host: process.env.RENDER_URL || 'localhost:3000',
   schemes: process.env.RENDER_URL ? ['https'] : ['http'],

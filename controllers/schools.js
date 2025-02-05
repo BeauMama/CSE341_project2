@@ -1,45 +1,42 @@
-const { response } = require('express');
-const mongodb = require('../db/connect');
 const { ObjectId } = require('mongodb');
+const mongodb = require('../db/connect');
 
-const API_KEY = process.env.API_KEY;
-
+// Get all schools
 const getAll = async (req, res) => {
   try {
-
-const result = await mongodb.getDb().collection('ut_state').find();
-const lists = await result.toArray();
-
+    const result = await mongodb.getDb().collection('schools').find();
+    const lists = await result.toArray();
     res.status(200).json(lists);
   } catch (err) {
-    res.status(500).json({ message: 'Error retrieving contacts', error: err });
+    res.status(500).json({ message: 'Error retrieving schools', error: err });
   }
 };
 
+// Get a single school by ID
 const getSingle = async (req, res) => {
   const { id } = req.params;
 
   if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ message: 'Invalid ObjectId' });
+    return res.status(400).json({ message: 'Invalid ObjectId' });
   }
 
   try {
     const userId = new ObjectId(id);
-    const contact = await mongodb.getDb().collection('ut_state').findOne({ _id: userId });
-    
-    if (!contact) {
-      return res.status(404).json({ message: 'Contact not found' });
+    const school = await mongodb.getDb().collection('schools').findOne({ _id: userId });
+
+    if (!school) {
+      return res.status(404).json({ message: 'School not found' });
     }
 
-    res.status(200).json(contact);
+    res.status(200).json(school);
   } catch (err) {
-    res.status(500).json({ message: 'Error retrieving contact', error: err });
+    res.status(500).json({ message: 'Error retrieving school', error: err });
   }
 };
 
+// Create a new school
 const createSchool = async (req, res) => {
-  const school =
-  {
+  const school = {
     name: req.body.name,
     location: req.body.location,
     established: req.body.established,
@@ -48,14 +45,20 @@ const createSchool = async (req, res) => {
     website: req.body.website,
     mascot: req.body.mascot
   };
-  const response = await mongodb.getDb().collection('ut_state').insertOne(school);
-  if(response.acknowledged){
-    res.status(201).json({message: 'School created', contact: response});
-}else{
-  res.status(500).json({message: 'There was an Error creating the new school', error: err});
-}
+
+  try {
+    const response = await mongodb.getDb().collection('schools').insertOne(school);
+    if (response.acknowledged) {
+      res.status(201).json({ message: 'School created', school: response.ops[0] });
+    } else {
+      res.status(500).json({ message: 'There was an error creating the new school' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: 'There was an error creating the new school', error: err });
+  }
 };
 
+// Update a school by ID
 const updateSchool = async (req, res) => {
   const userId = new ObjectId(req.params.id);
   const school = {
@@ -67,24 +70,34 @@ const updateSchool = async (req, res) => {
     website: req.body.website,
     mascot: req.body.mascot
   };
-  const response = await mongodb.getDb().collection('ut_state').replaceOne({ _id: userId }, school );
 
-  if (response.modifiedCount > 0) {
-    res.status(200).send();
-  } else {
-    res.status(500).json({ message: 'There was an Error updating the school', error: err });
-  }
-}
-
-const deleteSchool = async (req, res) => {
-  const userId= new ObjectId(req.params.id);
-  const response = await mongodb.getDb().collection('ut_state').deleteOne({_id: userId}, true);
-
-  if (response.deletedCount > 0) {
-      return res.status(200).send();
-    }else{
-      res.status(500).json({message: 'There was an Error deleting the school', error: err});
+  try {
+    const response = await mongodb.getDb().collection('schools').replaceOne({ _id: userId }, school);
+    if (response.modifiedCount > 0) {
+      res.status(200).json({ message: 'School updated' });
+    } else {
+      res.status(404).json({ message: 'School not found or no changes made' });
     }
+  } catch (err) {
+    res.status(500).json({ message: 'There was an error updating the school', error: err });
+  }
+};
+
+// Delete a school by ID
+const deleteSchool = async (req, res) => {
+  const userId = new ObjectId(req.params.id);
+
+  try {
+    const response = await mongodb.getDb().collection('schools').deleteOne({ _id: userId });
+
+    if (response.deletedCount > 0) {
+      res.status(200).json({ message: 'School deleted' });
+    } else {
+      res.status(404).json({ message: 'School not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: 'There was an error deleting the school', error: err });
+  }
 };
 
 module.exports = { getAll, getSingle, createSchool, updateSchool, deleteSchool };

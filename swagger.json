@@ -8,7 +8,7 @@
     "host": "",
      "schemes": ["http","https"], 
     "paths": {
-      "/contacts": {
+      "/schools": {
         "get": {
           "description": "Retrieve all schools. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
           "parameters": [
@@ -71,7 +71,7 @@
           }
         }
       },
-      "/contacts/{id}": {
+      "/schools/{id}": {
         "get": {
           "description": "Retrieve a contact by ID. API key -- e289b414-6606-46d1-8fb4-0aaedef32a36",
           "parameters": [
