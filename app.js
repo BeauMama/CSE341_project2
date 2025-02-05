@@ -3,7 +3,7 @@ const express = require('express');
 const mongodb = require('./db/connect')
 const cors = require('cors');
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 const app = express();
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
