@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { ObjectId } = require('mongodb');
 const mongodb = require('../db/connect');
 
@@ -28,13 +29,13 @@ const getSingle = async (req, res) => {
       return res.status(404).json({ message: 'Roommate not found' });
     }
 
-    res.status(200).json(school);
+    res.status(200).json(roommate);
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving roommate', error: err });
   }
 };
 
-// Create a new school
+// Create a new reoommate
 const createRoommate = async (req, res) => {
   const roommate = {
     name: req.body.name,

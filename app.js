@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const express = require('express');
 const mongodb = require('./db/connect')
 const cors = require('cors');
@@ -8,6 +7,7 @@ const app = express();
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
+
 
 
 app

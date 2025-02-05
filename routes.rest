@@ -27,7 +27,7 @@ Content-Type: application/json
 {
     "name": "University of Utah",
     "location": "Salt Lake City, UT",
-    "established": 1850,
+    "established": 1855,
     "type": "Public",
     "student_population": 32000,
     "website": "https://www.utah.edu",
@@ -35,7 +35,7 @@ Content-Type: application/json
 }
 
 ### Delete school
-DELETE http://localhost:3000/schools/67a2bd0822952e4ac7876d8a http/1.1
+DELETE http://localhost:3000/schools/67a3d92558adc7c0ee695425 http/1.1
 
 //local host for roommates
 
@@ -65,17 +65,17 @@ PUT http://localhost:3000/roommates/67a2c1d54c0364cd98e2eb75 http/1.1
 Content-Type: application/json
 
 {
-    name: "Alice Johnson",
-    age :  "19",
-    major: "Computer Science",
-    contact: {
-        phone: "555-555-1235",
-        email: "alice.johnson@email.com"
+    "name": "Alice Johnson",
+    "age" :  "19",
+    "major": "Computer Science",
+    "contact": {
+        "phone": "555-555-1234",
+        "email": "alice.johnson@email.com"
     }
 }
 
 ### Delete roommate
-DELETE http://localhost:3000/roommates/67a2d61e0172680b648ca5ff http/1.1
+DELETE http://localhost:3000/roommates/67a3db252e3de875a879211f http/1.1
 
 //Render server
 ### Get all contacts
@@ -143,12 +143,12 @@ PUT https://cse341-project2-4wgf.onrender.com/67a2c1d54c0364cd98e2eb75 http/1.1
 Content-Type: application/json
 
 {
-    name: "Alice Johnson",
-    age :  "19",
-    major: "Computer Science",
-    contact: {
-        phone: "555-555-1235",
-        email: "alice.johnson@email.com"
+    "name": "Alice Johnson",
+    "age" :  "19",
+    "major": "Computer Science",
+    "contact": {
+        "phone": "555-555-1235",
+        "email": "alice.johnson@email.com"
     }
 }
 
