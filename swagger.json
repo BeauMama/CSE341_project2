@@ -153,35 +153,36 @@
       }
     }
   },
-  "definitions": {
-    "School": {
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "name": { "type": "string" },
-        "location": { "type": "string" },
-        "established": { "type": "integer" },
-        "type": { "type": "string" },
-        "student_population": { "type": "integer" },
-        "website": { "type": "string" },
-        "mascot": { "type": "string" }
-      }
-    },
-    "Roommate": {
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "name": { "type": "string" },
-        "age": { "type": "integer" },
-        "major": { "type": "string" },
-        "contact": {
-          "type": "object",
-          "properties": {
-            "phone": { "type": "string" },
-            "email": { "type": "string" }
-          }
+ "definitions": {
+  "School": {
+    "type": "object",
+    "properties": {
+      "_id": { "type": "string", "description": "MongoDB assigned unique identifier", "readOnly": true },
+      "name": { "type": "string" },
+      "location": { "type": "string" },
+      "established": { "type": "integer" },
+      "type": { "type": "string" },
+      "student_population": { "type": "integer" },
+      "website": { "type": "string" },
+      "mascot": { "type": "string" }
+    }
+  },
+  "Roommate": {
+    "type": "object",
+    "properties": {
+      "_id": { "type": "string", "description": "MongoDB assigned unique identifier", "readOnly": true },
+      "name": { "type": "string" },
+      "age": { "type": "integer" },
+      "major": { "type": "string" },
+      "contact": {
+        "type": "object",
+        "properties": {
+          "phone": { "type": "string" },
+          "email": { "type": "string" }
         }
       }
     }
   }
-}
+} 
+ }
+

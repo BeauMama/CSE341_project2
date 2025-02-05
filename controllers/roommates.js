@@ -40,10 +40,7 @@ const createRoommate = async (req, res) => {
     name: req.body.name,
     age: req.body.age,
     major: req.body.major,
-    contact: {
-        phone: req.body.phone,
-        email: req.body.email
-    }
+    contact: req.body.contact || {}
    
   };
 
@@ -80,10 +77,7 @@ const updateRoommate = async (req, res) => {
     name: req.body.name,
     age: req.body.age,
     major: req.body.major,
-    contact: {
-        phone: req.body.phone,
-        email: req.body.email
-    }
+    contact: req.body.contact || {}
   };
 
   try {

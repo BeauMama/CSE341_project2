@@ -1,12 +1,12 @@
-//local host
+//local host for schools
 
-### Get all contacts
+### Get all schools
 GET http://localhost:3000/schools/
 
-### Get a single contact
+### Get a single school
 GET http://localhost:3000/schools/67a2a3ee4c0364cd98e2eb67
 
-### Create contact
+### Create school
 POST http://localhost:3000/schools/ http/1.1
 Content-Type: application/json
 
@@ -20,7 +20,7 @@ Content-Type: application/json
     "mascot": "Tiger"
 }
 
-### Put contact
+### Put school
 PUT http://localhost:3000/schools/67a2a3ee4c0364cd98e2eb67 http/1.1    
 Content-Type: application/json
 
@@ -34,10 +34,48 @@ Content-Type: application/json
     "mascot": "Swoop the Falcon"
 }
 
-### Delete contact
+### Delete school
 DELETE http://localhost:3000/schools/67a2bd0822952e4ac7876d8a http/1.1
 
+//local host for roommates
 
+### Get all roommates
+GET http://localhost:3000/roommates/
+
+### Get a single roommate
+GET http://localhost:3000/roommates/67a2c1d54c0364cd98e2eb75
+
+### Create roommate
+POST http://localhost:3000/roommates/ http/1.1
+Content-Type: application/json
+
+{
+   "name": "Mandi Beau",
+    "age" :  "22",
+    "major": "Computer Science",
+    "contact": {
+            "phone": "555-555-5555",
+            "email": "mandi.beau@email.com"
+        }
+    }
+
+
+### Put roommates
+PUT http://localhost:3000/roommates/67a2c1d54c0364cd98e2eb75 http/1.1    
+Content-Type: application/json
+
+{
+    name: "Alice Johnson",
+    age :  "19",
+    major: "Computer Science",
+    contact: {
+        phone: "555-555-1235",
+        email: "alice.johnson@email.com"
+    }
+}
+
+### Delete roommate
+DELETE http://localhost:3000/roommates/67a2d61e0172680b648ca5ff http/1.1
 
 //Render server
 ### Get all contacts
