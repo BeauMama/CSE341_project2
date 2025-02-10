@@ -35,7 +35,7 @@ const getSingle = async (req, res) => {
   }
 };
 
-// Create a new reoommate
+// Create a new roommate
 const createRoommate = async (req, res) => {
   const roommate = {
     name: req.body.name,
