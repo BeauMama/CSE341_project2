@@ -1,47 +1,55 @@
 /* eslint-disable no-console */
 const express = require('express');
-const mongodb = require('./db/connect')
-const cors = require('cors');
-
-const port = process.env.PORT || 3000;
-const app = express();
-
+const passport = require('passport');
+const session = require('express-session');
+const dotenv = require('dotenv');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
-//middleware
-app.use(cors());
-app.use(express.json());
+dotenv.config();
 
-//Set CORS headers
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    next();
+require('./config/passport');
+
+const app = express();
+
+// Middleware setup
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Define the login route
+app.get('/login', (req, res) => {
+  res.send('Please log in!');
 });
 
-//Swagger documentation route
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// Middleware to check if the user is authenticated
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');  // Redirect to login if not authenticated
+}
 
-//Routes
-app.use('/', require('./routes/'));
+// Protected routes (requires authentication)
+app.use('/api-docs', ensureAuthenticated, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-//Error handling middleware
-app.use((err, req, res, next) => {  
-    console.error(err.stack);
-    res.status(err.status || 500).json({ 
-        message: err.message || 'Something went wrong',
-        error: err.stack || err,
-  });
+// Google authentication routes
+app.use('/auth', require('./routes/auth'));  // Make sure this is in your 'auth.js' file
+
+// Other routes
+app.use('/', require('./routes/protected'));
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong' });
 });
 
-
-mongodb.initDb((err) => {
-    if(err) {
-        console.error('Failed to connect to the database', err);
-         return;
-    }  
-        
-    app.listen(port, () => {
-        console.log(`Server is running on port ${port}`);
-});
+// Start the server
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
