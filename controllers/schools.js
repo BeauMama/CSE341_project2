@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { ObjectId } = require('mongodb');
 const mongodb = require('../db/connect');
 
@@ -87,13 +88,15 @@ const updateSchool = async (req, res) => {
 
   try {
     const response = await mongodb.getDb().collection('schools').replaceOne({ _id: userId }, school);
+    
     if (response.modifiedCount > 0) {
       res.status(200).json({ message: 'School updated' });
     } else {
       res.status(404).json({ message: 'School not found or no changes made' });
     }
   } catch (err) {
-    res.status(500).json({ message: 'There was an error updating the school', error: err });
+    console.error('Error updating school:', err);
+    res.status(500).json({ message: 'There was an error updating the school', error: err.message });
   }
 };
 

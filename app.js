@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
 const express = require('express');
+const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
+const { initDb } = require('./db/connect'); 
 
 dotenv.config();
 
@@ -12,12 +14,31 @@ require('./config/passport');
 
 const app = express();
 
-// Middleware setup
+// Trust proxy for Render.com deployment
+app.set('trust proxy', 1);
+
+// Enable CORS
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production'
+    ? 'https://cse341-project2-4wgf.onrender.com'
+    : 'http://localhost:3000',
+  credentials: true
+}));
+
+// Session configuration
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    sameSite: 'lax'
+  }
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -31,25 +52,37 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('/login');  // Redirect to login if not authenticated
+  res.redirect('/login');
 }
 
 // Protected routes (requires authentication)
 app.use('/api-docs', ensureAuthenticated, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Google authentication routes
-app.use('/auth', require('./routes/auth'));  // Make sure this is in your 'auth.js' file
+// Routes
+app.use('/auth', require('./routes/auth')); // Google Auth Routes
+app.use('/schools', require('./routes/schools')); // Schools Routes
+app.use('/', require('./routes/protected')); // Protected Routes
 
-// Other routes
-app.use('/', require('./routes/protected'));
+// Handle 404 errors for unknown routes
+app.use((req, res, next) => {
+  res.status(404).json({ message: 'Route not found' });
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong' });
+  console.error('Server Error:', err); 
+  res.status(500).json({ message: 'Something went wrong', error: err.message });
 });
 
-// Start the server
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
+// Initialize the database before starting the server
+initDb()
+  .then(() => {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Error initializing DB:', err); 
+    process.exit(1); 
+  });
