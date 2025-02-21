@@ -61,6 +61,7 @@ app.use('/api-docs', ensureAuthenticated, swaggerUi.serve, swaggerUi.setup(swagg
 // Routes
 app.use('/auth', require('./routes/auth')); // Google Auth Routes
 app.use('/schools', require('./routes/schools')); // Schools Routes
+app.use('/roommates', require('./routes/roommates')); // Roommates Routes
 app.use('/', require('./routes/protected')); // Protected Routes
 
 // Handle 404 errors for unknown routes
