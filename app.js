@@ -58,11 +58,9 @@ function ensureAuthenticated(req, res, next) {
 // Protected routes (requires authentication)
 app.use('/api-docs', ensureAuthenticated, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Routes
-app.use('/auth', require('./routes/auth')); // Google Auth Routes
-app.use('/schools', require('./routes/schools')); // Schools Routes
-app.use('/roommates', require('./routes/roommates')); // Roommates Routes
-app.use('/', require('./routes/protected')); // Protected Routes
+// Include all routes from 'routes/index.js'
+app.use('/', require('./routes'));
+
 
 // Handle 404 errors for unknown routes
 app.use((req, res, next) => {
