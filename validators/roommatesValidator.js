@@ -16,8 +16,9 @@ const validateRoommate = [
         .isEmail()
         .withMessage('Email is required'),
     body('contact.phone')
-        .isMobilePhone()
-        .withMessage('Phone number is required'),
+        .matches(/^\d{3}-\d{3}-\d{4}$/)  
+        .withMessage('Phone number must be in the format XXX-XXX-XXXX')
+      ,
 ];
 
 module.exports = validateRoommate;
