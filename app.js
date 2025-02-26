@@ -56,33 +56,24 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'em
 
 // Callback route for Google authentication
 app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }), 
+  passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
-    // Redirect to /dashboard after successful login
-    res.redirect('/api-docs'); 
+    res.redirect('/api-docs'); // Redirect to Swagger UI after login
   }
 );
 
-
-app.get('/logout', (req, res, next) => {
-  req.logout((err) => {
+// Logout route
+app.get('/logout', (req, res) => {
+  req.logout(); // Remove callback function
+  req.session.destroy((err) => {
     if (err) {
-      console.error('Error logging out:', err);
-      return next(err); // Pass the error to the error handler
+      console.error('Error destroying session:', err);
+      return res.status(500).send('Error logging out');
     }
-
-    req.session.destroy((err) => {
-      if (err) {
-        console.error('Error destroying session:', err);
-        return res.status(500).send('Error logging out');
-      }
-
-      res.clearCookie('connect.sid'); // Remove session cookie
-      res.redirect('/api-docs');
-    });
+    res.clearCookie('connect.sid'); // Remove session cookie
+    res.redirect('/api-docs'); // Redirect to Swagger UI after logout
   });
 });
-
 
 // Middleware to check authentication
 const authenticate = (req, res, next) => {
@@ -107,7 +98,7 @@ app.use((req, res, next) => {
 app.use('/swagger.json', (req, res) => {
   console.log('Checking authentication for Swagger:', req.user); // Debugging
 
-  const isAuthenticated = req.user ? true : false; // Use req.user instead of req.isAuthenticated()
+  const isAuthenticated = req.isAuthenticated(); // Use req.isAuthenticated()
 
   // Clone the Swagger document to avoid modifying the original
   let swaggerDoc = JSON.parse(JSON.stringify(swaggerDocument)); // Deep copy
@@ -158,9 +149,6 @@ app.get('/api-docs', (req, res) => {
     </html>
   `);
 });
-
-// Serve Swagger UI static files
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Handle 404 errors
 app.use((req, res) => {

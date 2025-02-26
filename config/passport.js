@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const dotenv = require('dotenv');
@@ -19,6 +20,9 @@ passport.use(new GoogleStrategy(
       displayName: profile.displayName,
       email: profile.emails?.[0]?.value || null, 
     };
+    // Log the user profile for debugging
+    console.log('Google Profile:', profile);
+    
     return done(null, user);
   }
 ));
