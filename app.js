@@ -59,7 +59,7 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }), 
   (req, res) => {
     // Redirect to /dashboard after successful login
-    res.redirect('/dashboard'); 
+    res.redirect('/api-docs'); 
   }
 );
 
