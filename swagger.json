@@ -5,9 +5,9 @@
     "description": "API for managing schools and roommates",
     "version": "1.0"
   },
-  "host": "",
+  "host": "",  
   "schemes": ["http", "https"],
- "tags": [
+  "tags": [
     {
       "name": "Schools",
       "description": "Calls for schools."
@@ -17,12 +17,13 @@
       "description": "Calls for roommates."
     }
   ],
+ 
   "paths": {
     "/schools": {
       "get": {
         "summary": "Get all schools",
         "tags": ["Schools"],
-        "description": "Retrieve a list of all schools.  ",
+        "description": "Retrieve a list of all schools.",
         "responses": {
           "200": {
             "description": "A list of schools",
@@ -153,36 +154,35 @@
       }
     }
   },
- "definitions": {
-  "School": {
-    "type": "object",
-    "properties": {
-      "_id": { "type": "string", "description": "MongoDB assigned unique identifier", "readOnly": true },
-      "name": { "type": "string","example": "University of Mandi" },
-      "location": { "type": "string", "example": "Salt Lake City, UT" },
-      "established": { "type": "integer", "example": 2022 },
-      "type": { "type": "string", "example": "Private" },
-      "student_population": { "type": "integer", "example": 100 },
-      "website": { "type": "string", "example": "https://www.univofmandi.edu" },
-      "mascot": { "type": "string", "example": "Elephant" }
-    }
-  },
-  "Roommate": {
-    "type": "object",
-    "properties": {
-      "_id": { "type": "string", "description": "MongoDB assigned unique identifier", "readOnly": true },
-      "name": { "type": "string", "example": "John Doe" },
-      "age": { "type": "integer", "example": 25 },
-      "major": { "type": "string", "example": "Computer Science" },
-      "contact": {
-        "type": "object",
-        "properties": {
-          "phone": { "type": "string", "example": "123-456-7890" },
-          "email": { "type": "string", "example": "john.doe@email.com" }
+  "definitions": {
+    "School": {
+      "type": "object",
+      "properties": {
+        "_id": { "type": "string", "description": "MongoDB assigned unique identifier", "readOnly": true },
+        "name": { "type": "string", "example": "University of Mandi" },
+        "location": { "type": "string", "example": "Salt Lake City, UT" },
+        "established": { "type": "integer", "example": 2022 },
+        "type": { "type": "string", "example": "Private" },
+        "student_population": { "type": "integer", "example": 100 },
+        "website": { "type": "string", "example": "https://www.univofmandi.edu" },
+        "mascot": { "type": "string", "example": "Elephant" }
+      }
+    },
+    "Roommate": {
+      "type": "object",
+      "properties": {
+        "_id": { "type": "string", "description": "MongoDB assigned unique identifier", "readOnly": true },
+        "name": { "type": "string", "example": "John Doe" },
+        "age": { "type": "integer", "example": 25 },
+        "major": { "type": "string", "example": "Computer Science" },
+        "contact": {
+          "type": "object",
+          "properties": {
+            "phone": { "type": "string", "example": "123-456-7890" },
+            "email": { "type": "string", "example": "john.doe@email.com" }
+          }
         }
       }
     }
   }
-} 
- }
-
+}
