@@ -52,7 +52,7 @@ app.get('/login', (req, res) => {
 });
 
 // Start Google authentication
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/auth/google', passport.authenticate('google', { scope: ['openid','profile', 'email'] }));
 
 // Callback route for Google authentication
 app.get('/auth/google/callback',
