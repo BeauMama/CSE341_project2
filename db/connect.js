@@ -11,10 +11,7 @@ const initDb = async () => {
     }
 
     try {
-        const client = await MongoClient.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        const client = await MongoClient.connect(process.env.MONGODB_URI);
         _db = client.db(process.env.DATABASE);  
         console.log('Connected to the database');
         return _db;

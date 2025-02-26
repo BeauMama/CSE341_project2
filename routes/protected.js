@@ -6,18 +6,13 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('/login');
+  res.redirect('/auth/google');
 }
 
 
 // Dashboard route
-router.get('/dashboard', (req, res) => {
-    // Assuming the profile is stored temporarily in the session
-    if (req.user) {
-        res.send(`Welcome ${req.user.displayName}`);  // Use `req.user` directly
-    } else {
-        res.send('No user logged in');
-    }
+router.get('/dashboard', ensureAuthenticated, (req, res) => {
+  res.send(`Welcome ${req.user.displayName}`);
 });
 
 // Example protected profile route

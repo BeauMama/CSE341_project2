@@ -6,10 +6,10 @@ const session = require('express-session');
 const dotenv = require('dotenv');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-const { initDb } = require('./db/connect'); 
+const listEndpoints = require('express-list-routes');
+const { initDb } = require('./db/connect');
 
 dotenv.config();
-
 require('./config/passport');
 
 const app = express();
@@ -42,34 +42,36 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Middleware to check if the user is authenticated
+const ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login'); // Redirect unauthorized users
+};
+
 // Define the login route
 app.get('/login', (req, res) => {
   res.send('Please log in!');
 });
 
-// Middleware to check if the user is authenticated
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-}
-
-// Protected routes (requires authentication)
-app.use('/api-docs', ensureAuthenticated, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 // Include all routes from 'routes/index.js'
 app.use('/', require('./routes'));
 
+// Protected route: Serve Swagger UI only for authenticated users
+app.use('/api-docs', ensureAuthenticated, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// List all routes (should be called after all routes are initialized)
+listEndpoints(app);
 
 // Handle 404 errors for unknown routes
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// Error handling middleware
+// General error handling middleware (catch-all for errors)
 app.use((err, req, res, next) => {
-  console.error('Server Error:', err); 
+  console.error('Server Error:', err);
   res.status(500).json({ message: 'Something went wrong', error: err.message });
 });
 
@@ -82,6 +84,6 @@ initDb()
     });
   })
   .catch((err) => {
-    console.error('Error initializing DB:', err); 
-    process.exit(1); 
+    console.error('Error initializing DB:', err);
+    process.exit(1);
   });
