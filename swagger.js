@@ -49,8 +49,17 @@ app.use('/api-docs', SwaggerUIBundle({
   deepLinking: true,
   presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
   layout: 'StandaloneLayout',
-  oauth2RedirectUrl: 'http://localhost:3000/oauth2/callback',
+  oauth2RedirectUrl: process.env.NODE_ENV === 'production'
+    ? 'https://cse341-project2-4wgf.onrender.com/oauth2/callback' 
+    : 'http://localhost:3000/oauth2/callback',  
+
+  requestInterceptor: (req) => {
+    // Ensure credentials are included with the request to send cookies
+    req.credentials = 'include';
+    return req;
+  },
 }));
+
 
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');

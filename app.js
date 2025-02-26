@@ -34,7 +34,7 @@ app.use(session({
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
@@ -63,17 +63,25 @@ app.get('/auth/google/callback',
 );
 
 // Logout route
-app.get('/logout', (req, res) => {
-  req.logout(); // Remove callback function
-  req.session.destroy((err) => {
+app.get('/logout', (req, res, next) => {
+  req.logout((err) => {
     if (err) {
-      console.error('Error destroying session:', err);
-      return res.status(500).send('Error logging out');
+      console.error('Error logging out:', err);
+      return next(err); // Pass the error to the error handler
     }
-    res.clearCookie('connect.sid'); // Remove session cookie
-    res.redirect('/api-docs'); // Redirect to Swagger UI after logout
+
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Error destroying session:', err);
+        return res.status(500).send('Error logging out');
+      }
+
+      res.clearCookie('connect.sid');
+      res.redirect('/api-docs'); 
+    });
   });
 });
+
 
 // Middleware to check authentication
 const authenticate = (req, res, next) => {
