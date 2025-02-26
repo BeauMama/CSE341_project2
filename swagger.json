@@ -5,7 +5,7 @@
     "description": "API for managing schools and roommates",
     "version": "1.0"
   },
-  "host": "",  
+  "host": "",
   "schemes": ["http", "https"],
   "tags": [
     {
@@ -17,13 +17,45 @@
       "description": "Calls for roommates."
     }
   ],
- 
+  "components": {
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+        "tokenUrl": "https://oauth2.googleapis.com/token",
+        "scopes": {
+          "read:schools": "Read access to schools data",
+          "write:schools": "Write access to schools data",
+          "read:roommates": "Read access to roommates data",
+          "write:roommates": "Write access to roommates data"
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "oauth2": [
+        "read:schools",
+        "write:schools",
+        "read:roommates",
+        "write:roommates"
+      ]
+    }
+  ],
   "paths": {
     "/schools": {
       "get": {
         "summary": "Get all schools",
+        "security": [
+          {
+            "oauth2": [
+              "read:schools"
+            ]
+          }
+        ],
         "tags": ["Schools"],
         "description": "Retrieve a list of all schools.",
+        
         "responses": {
           "200": {
             "description": "A list of schools",
@@ -32,6 +64,7 @@
               "items": {
                 "$ref": "#/definitions/School"
               }
+              
             }
           }
         }
@@ -40,6 +73,13 @@
         "summary": "Create a new school",
         "tags": ["Schools"],
         "description": "Add a new school to the database.",
+        "security": [
+          {
+            "oauth2": [
+              "write:schools"
+            ]
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -56,6 +96,13 @@
     "/schools/{id}": {
       "get": {
         "summary": "Get a school by ID",
+        "security": [
+          {
+            "oauth2": [
+              "read:schools"
+            ]
+          }
+        ],
         "tags": ["Schools"],
         "parameters": [
           { "in": "path", "name": "id", "required": true, "type": "string" }
@@ -77,6 +124,13 @@
       },
       "delete": {
         "summary": "Delete a school",
+        "security": [
+          {
+            "oauth2": [
+              "write:schools"
+            ]
+          }
+        ],
         "tags": ["Schools"],
         "parameters": [
           { "in": "path", "name": "id", "required": true, "type": "string" }
@@ -91,6 +145,13 @@
         "summary": "Get all roommates",
         "tags": ["Roommates"],
         "description": "Retrieve a list of all roommates.",
+        "security": [
+          {
+            "oauth2": [
+              "read:roommates"
+            ]
+          }
+        ],
         "responses": {
           "200": {
             "description": "A list of roommates",
@@ -107,6 +168,13 @@
         "summary": "Create a new roommate",
         "tags": ["Roommates"],
         "description": "Add a new roommate to the database.",
+        "security": [
+          {
+            "oauth2": [
+              "write:roommates"
+            ]
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -127,6 +195,13 @@
         "parameters": [
           { "in": "path", "name": "id", "required": true, "type": "string" }
         ],
+        "security": [
+          {
+            "oauth2": [
+              "read:roommates"
+            ]
+          }
+        ],
         "responses": {
           "200": { "description": "Roommate details", "schema": { "$ref": "#/definitions/Roommate" } }
         }
@@ -138,6 +213,13 @@
           { "in": "path", "name": "id", "required": true, "type": "string" },
           { "in": "body", "name": "body", "required": true, "schema": { "$ref": "#/definitions/Roommate" } }
         ],
+        "security": [
+          {
+            "oauth2": [
+              "write:roommates"
+            ]
+          }
+        ],
         "responses": {
           "200": { "description": "Roommate updated successfully" }
         }
@@ -147,6 +229,13 @@
         "tags": ["Roommates"],
         "parameters": [
           { "in": "path", "name": "id", "required": true, "type": "string" }
+        ],
+        "security": [
+          {
+            "oauth2": [
+              "write:roommates"
+            ]
+          }
         ],
         "responses": {
           "200": { "description": "Roommate deleted successfully" }

@@ -1,5 +1,9 @@
+/* eslint-disable no-console */
+const express = require('express');
+const path = require('path');
+const app = express();
 const swaggerAutogen = require('swagger-autogen')();
-const SwaggerUIBundle = require('swagger-ui-dist').swaggerUi; 
+const SwaggerUIBundle = require('swagger-ui-dist').swaggerUi;
 
 const doc = {
   swagger: '2.0',
@@ -29,21 +33,25 @@ const doc = {
   ],
 };
 
-const ui = SwaggerUIBundle({
-  url: "swagger.json", 
-  dom_id: '#swagger-ui',
-  deepLinking: true,
-  presets: [
-    SwaggerUIBundle.presets.apis,
-    SwaggerUIStandalonePreset
-  ],
-  layout: "StandaloneLayout",
-  oauth2RedirectUrl: "http://localhost:3000/oauth2/callback", 
-});
-
-// Set the path for the generated swagger.json file
 const outputFile = './swagger.json';
 const endpointsFiles = ['./routes/index.js'];
 
 // Generate the swagger.json file from the route definitions
 swaggerAutogen(outputFile, endpointsFiles, doc);
+
+// Serve the generated swagger.json file
+app.use('/swagger.json', express.static(path.join(__dirname, 'swagger.json')));
+
+// Serve Swagger UI at /api-docs
+app.use('/api-docs', SwaggerUIBundle({
+  url: '/swagger.json', 
+  dom_id: '#swagger-ui',
+  deepLinking: true,
+  presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+  layout: 'StandaloneLayout',
+  oauth2RedirectUrl: 'http://localhost:3000/oauth2/callback',
+}));
+
+app.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});
