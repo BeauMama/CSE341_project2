@@ -60,17 +60,25 @@ app.get('/auth/google/callback',
   }
 );
 
-app.get('/logout', (req, res) => {
-  req.logout();
-  req.session.destroy((err) => {
+app.get('/logout', (req, res, next) => {
+  req.logout((err) => {
     if (err) {
-      console.error('Error destroying session:', err);
-      return res.status(500).send('Error logging out');
+      console.error('Error logging out:', err);
+      return next(err); // Pass the error to the error handler
     }
-    res.clearCookie('connect.sid');
-    res.redirect('/login');
+
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Error destroying session:', err);
+        return res.status(500).send('Error logging out');
+      }
+
+      res.clearCookie('connect.sid'); // Remove session cookie
+      res.redirect('/api-docs');
+    });
   });
 });
+
 
 // Middleware to check authentication
 const authenticate = (req, res, next) => {
@@ -79,6 +87,9 @@ const authenticate = (req, res, next) => {
   }
   next();
 };
+
+// Routes
+app.use('/', require('./routes'));
 
 // Apply authentication middleware to all write routes
 app.use((req, res, next) => {
