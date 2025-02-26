@@ -53,12 +53,10 @@ app.get('/login', (req, res) => {
 
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    res.redirect('/api-docs'); // Redirect to Swagger UI after login
-  }
-);
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
+  res.redirect(process.env.NODE_ENV === 'production' ? '/dashboard' : '/api-docs');
+});
+
 
 app.get('/logout', (req, res, next) => {
   req.logout((err) => {
