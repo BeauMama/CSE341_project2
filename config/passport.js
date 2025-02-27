@@ -33,7 +33,7 @@ passport.serializeUser((user, done) => {
   done(null, user);
 });
 
-passport.deserializeUser((obj, done) => {
-  console.log('✅ Deserializing User:', obj);
-  done(null, obj);
+passport.deserializeUser((user, done) => {
+  console.log('✅ Restoring User:', user);
+  done(null, user); 
 });

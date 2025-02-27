@@ -19,12 +19,17 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
     ? 'https://cse341-project2-4wgf.onrender.com'
     : 'http://localhost:3000',
   credentials: true
 }));
+
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1); 
+}
 
 // Session setup
 app.use(session({
@@ -77,20 +82,14 @@ app.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) {
       console.error('Error logging out:', err);
-      return next(err); // Pass the error to the error handler
+      return next(err);
     }
-
-    req.session.destroy((err) => {
-      if (err) {
-        console.error('Error destroying session:', err);
-        return res.status(500).send('Error logging out');
-      }
-
-      res.clearCookie('connect.sid');
-      res.redirect('/api-docs'); 
-    });
+    req.session = null; 
+    res.clearCookie('connect.sid');
+    res.redirect('/api-docs');
   });
 });
+
 
 
 // Middleware to check authentication
@@ -104,23 +103,16 @@ const authenticate = (req, res, next) => {
 // Routes
 app.use('/', require('./routes'));
 
-// Apply authentication middleware to all write routes
-app.use((req, res, next) => {
-  if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
-    return authenticate(req, res, next);
-  }
-  next();
-});
 
 // Serve the dynamically filtered Swagger JSON
 app.use('/swagger.json', (req, res) => {
   console.log('Checking authentication for Swagger:', req.user);  // Debugging
 
-  const isAuthenticated = req.user ? true : false;  // Use req.user to check authentication
+  //const isAuthenticated = req.user ? true : false;  // Use req.user to check authentication
 
-  let swaggerDoc = JSON.parse(JSON.stringify(swaggerDocument));  // Deep copy
+  let swaggerDoc = JSON.parse(JSON.stringify(swaggerDocument)); 
 
-  if (!isAuthenticated) {
+  if (!req.user) {
     Object.keys(swaggerDoc.paths).forEach((path) => {
       ['post', 'put', 'delete'].forEach((method) => {
         if (swaggerDoc.paths[path][method]) {
@@ -167,9 +159,7 @@ app.get('/api-docs', (req, res) => {
 });
 
 // Handle 404 errors
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
-});
+app.use((req, res) => {res.status(404).json({ message: 'Route not found' });});
 
 // General error handling middleware
 app.use((err, req, res, next) => {
