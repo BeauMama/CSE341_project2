@@ -29,9 +29,11 @@ passport.use(new GoogleStrategy(
 
 // Passport session handling
 passport.serializeUser((user, done) => {
+  console.log('✅ Serializing User:', user);
   done(null, user);
 });
 
-passport.deserializeUser((user, done) => {
-  done(null, user);
+passport.deserializeUser((obj, done) => {
+  console.log('✅ Deserializing User:', obj);
+  done(null, obj);
 });

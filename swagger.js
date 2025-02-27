@@ -44,10 +44,13 @@ app.use('/swagger.json', express.static(path.join(__dirname, 'swagger.json')));
 
 // Serve Swagger UI at /api-docs
 app.use('/api-docs', (req, res, next) => {
-  console.log('Checking authentication for Swagger:', req.user);  // Debugging
+  res.setHeader('Access-Control-Allow-Credentials', 'true'); 
+  console.log('Checking authentication for Swagger:', req.user); 
+
   if (!req.user) {
     return res.status(401).json({ message: 'Unauthorized. Please log in.' });
   }
+
   next();
 }, SwaggerUIBundle({
   url: '/swagger.json', 
@@ -60,10 +63,11 @@ app.use('/api-docs', (req, res, next) => {
     : 'http://localhost:3000/oauth2/callback',  
 
   requestInterceptor: (req) => {
-    req.credentials = 'include';  // Send cookies with requests
+    req.credentials = 'include'; 
     return req;
   },
 }));
+
 
 
 

@@ -43,6 +43,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+  console.log('🔍 Session Data:', req.session);
+  console.log('🔍 User in Session:', req.user);
+  next();
+});
+
+
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
