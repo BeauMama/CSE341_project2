@@ -43,7 +43,13 @@ swaggerAutogen(outputFile, endpointsFiles, doc);
 app.use('/swagger.json', express.static(path.join(__dirname, 'swagger.json')));
 
 // Serve Swagger UI at /api-docs
-app.use('/api-docs', SwaggerUIBundle({
+app.use('/api-docs', (req, res, next) => {
+  console.log('Checking authentication for Swagger:', req.user);  // Debugging
+  if (!req.user) {
+    return res.status(401).json({ message: 'Unauthorized. Please log in.' });
+  }
+  next();
+}, SwaggerUIBundle({
   url: '/swagger.json', 
   dom_id: '#swagger-ui',
   deepLinking: true,
@@ -54,11 +60,11 @@ app.use('/api-docs', SwaggerUIBundle({
     : 'http://localhost:3000/oauth2/callback',  
 
   requestInterceptor: (req) => {
-    // Ensure credentials are included with the request to send cookies
-    req.credentials = 'include';
+    req.credentials = 'include';  // Send cookies with requests
     return req;
   },
 }));
+
 
 
 app.listen(3000, () => {

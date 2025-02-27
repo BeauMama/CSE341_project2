@@ -28,7 +28,7 @@ app.use(cors({
 
 // Session setup
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || 'your_secret-key',
   resave: false,
   saveUninitialized: false,
   cookie: {
