@@ -55,12 +55,15 @@ app.get('/login', (req, res) => {
 app.get('/auth/google', passport.authenticate('google', { scope: ['openid','profile', 'email'] }));
 
 // Callback route for Google authentication
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }), 
   (req, res) => {
-    res.redirect('/api-docs'); // Redirect to Swagger UI after login
+   
+    console.log('Logged in user:', req.user);  
+    res.redirect('/api-docs');  
   }
 );
+
 
 // Logout route
 app.get('/logout', (req, res, next) => {
@@ -104,14 +107,12 @@ app.use((req, res, next) => {
 
 // Serve the dynamically filtered Swagger JSON
 app.use('/swagger.json', (req, res) => {
-  console.log('Checking authentication for Swagger:', req.user); // Debugging
+  console.log('Checking authentication for Swagger:', req.user);  // Debugging
 
-  const isAuthenticated = req.isAuthenticated(); // Use req.isAuthenticated()
+  const isAuthenticated = req.user ? true : false;  // Use req.user to check authentication
 
-  // Clone the Swagger document to avoid modifying the original
-  let swaggerDoc = JSON.parse(JSON.stringify(swaggerDocument)); // Deep copy
+  let swaggerDoc = JSON.parse(JSON.stringify(swaggerDocument));  // Deep copy
 
-  // Remove POST, PUT, DELETE routes if the user is not authenticated
   if (!isAuthenticated) {
     Object.keys(swaggerDoc.paths).forEach((path) => {
       ['post', 'put', 'delete'].forEach((method) => {
@@ -122,10 +123,10 @@ app.use('/swagger.json', (req, res) => {
     });
   }
 
-  // Prevent caching issues
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.json(swaggerDoc);
 });
+
 
 // Serve Swagger UI with login/logout links
 app.get('/api-docs', (req, res) => {
